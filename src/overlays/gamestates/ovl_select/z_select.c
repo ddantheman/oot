@@ -281,6 +281,8 @@ static MapSelectEntry sMapSelectEntries[] = {
     { "125:" T(GFXP_KATAKANA "ﾊｲﾗﾙ" GFXP_HIRAGANA "ﾆﾜ" GFXP_KATAKANA "ｹﾞｰﾑ2", "Hyrule Garden Game 2"),
       MapSelect_LoadGame, ENTR_HAIRAL_NIWA2_0 },
 #endif
+	{ "126: Tutorial Scene", MapSelect_LoadGame, ENTR_MY_SCENE_0 },
+	{ "127: Tutorial Dungeon", MapSelect_LoadGame, ENTR_MY_DUNGEON_0 },
     { "title", (void*)MapSelect_LoadTitle, 0 },
 #if PLATFORM_N64
     { "64DD TEST  n64dd_SetDiskVersion(1)", (void*)func_80800AD0_unknown, 0 },

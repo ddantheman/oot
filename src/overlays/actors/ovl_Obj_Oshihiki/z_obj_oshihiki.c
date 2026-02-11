@@ -664,6 +664,7 @@ void ObjOshihiki_Draw(Actor* thisx, PlayState* play) {
 
 #if DEBUG_FEATURES
     switch (play->sceneId) {
+		case SCENE_MY_DUNGEON:
         case SCENE_DEKU_TREE:
         case SCENE_DODONGOS_CAVERN:
         case SCENE_FOREST_TEMPLE:
