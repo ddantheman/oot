@@ -14,13 +14,13 @@ SHELL = /usr/bin/env bash
 -include .make_options.mk
 
 # If COMPARE is 1, check the output md5sum after building. Set to 0 when modding.
-COMPARE ?= 1
+COMPARE ?= 0
 # If NON_MATCHING is 1, define the NON_MATCHING C flag when building. Set to 1 when modding.
-NON_MATCHING ?= 0
+NON_MATCHING ?= 1
 # If ORIG_COMPILER is 1, compile with QEMU_IRIX and the original compiler.
 ORIG_COMPILER ?= 0
 # If COMPILER is "gcc", compile with GCC instead of IDO.
-COMPILER ?= ido
+COMPILER ?= gcc
 # Target game version. Ensure the corresponding input ROM is placed in baseroms/$(VERSION)/baserom.z64.
 # Currently the following versions are supported:
 #   ntsc-1.0       N64 NTSC 1.0 (Japan/US depending on REGION)
@@ -49,12 +49,12 @@ MIPS_BINUTILS_PREFIX ?= mips-linux-gnu-
 N64_EMULATOR ?=
 # Set to override game region in the ROM header (options: JP, US, EU). This can be used to build a fake US version
 # of the debug ROM for better emulator compatibility, or to build US versions of NTSC N64 ROMs.
-# REGION ?= US
+REGION ?= US
 # Set to enable debug features regardless of ROM version.
 # Note that by enabling debug features on non-debug ROM versions, some debug ROM specific assets will not be included.
 # This means the debug test scenes and some debug graphics in the elf_msg actors will not work as expected.
 # This may also be used to disable debug features on debug ROMs by setting DEBUG_FEATURES to 0
-# DEBUG_FEATURES ?= 1
+DEBUG_FEATURES ?= 1
 
 # Version-specific settings
 REGIONAL_CHECKSUM := 0
@@ -758,6 +758,7 @@ ifneq ($(COMPARE),0)
 	@md5sum -c $(BASEROM_DIR)/checksum.md5
  endif
 endif
+	cp $(ROM) /mnt/c/Users/danie/Desktop/OoT/rom/
 
 compress: $(ROMC)
 ifneq ($(COMPARE),0)
