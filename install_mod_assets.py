@@ -37,9 +37,14 @@ def remove_stale_assets(root: str, copied_files: T.List[str], last_cache_time: i
 def copy_all(root: str) -> T.List[str]:
     src_root = os.path.join(root, "mod_assets")
     dst_root = os.path.join(root, "extracted", sys.argv[1],"assets")
+    dst_text_root = os.path.join(root, "extracted", sys.argv[1])
     copied_files: T.List[str] = []
     for src_dir, _, file_names in os.walk(src_root):
-        dst_dir = src_dir.replace(src_root, dst_root, 1)
+        # Move text folder outside of assets
+        if os.path.basename(src_dir) == "text":
+            dst_dir = src_dir.replace(src_root, dst_text_root, 1)
+        else:
+            dst_dir = src_dir.replace(src_root, dst_root, 1)
         Path(dst_dir).mkdir(parents=True, exist_ok=True)
         for file_name in file_names:
             src_file = os.path.join(src_dir, file_name)
