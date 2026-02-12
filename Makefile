@@ -747,7 +747,11 @@ endif
 
 #### Main Targets ###
 
-all: rom compress
+all:
+	python3 install_mod_assets.py $(VERSION) $(BUILD_DIR)
+	make -j${nproc} build
+
+build: rom compress
 
 rom: $(ROM)
 ifneq ($(COMPARE),0)
