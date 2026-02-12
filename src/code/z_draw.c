@@ -82,6 +82,7 @@
 #include "assets/objects/object_gi_rupy/object_gi_rupy.h"
 #include "assets/objects/object_gi_sword_1/object_gi_sword_1.h"
 #include "assets/objects/object_st/object_st.h"
+#include "mod_assets/objects/object_gi_feather/object_gi_feather.h"
 
 // "Get Item" Model Draw Functions
 void GetItem_DrawMaskOrBombchu(PlayState* play, s16 giDrawId);
@@ -332,7 +333,8 @@ DrawItemTableEntry sDrawItemTable[] = {
     // GID_FARORES_WIND
     { GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiFaroresWindColorDL, gGiMagicSpellOrbDL } },
     // GID_NAYRUS_LOVE
-    { GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiNayrusLoveColorDL, gGiMagicSpellOrbDL } },
+    //{ GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiNayrusLoveColorDL, gGiMagicSpellOrbDL } },
+	 { GetItem_DrawOpa0, { gGiRocsFeatherDL_opaque_dl } },
     // GID_BLUE_FIRE
     { GetItem_DrawBlueFire, { gGiBlueFireChamberstickDL, gGiBlueFireFlameDL } },
     // GID_BUG

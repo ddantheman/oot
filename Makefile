@@ -806,7 +806,7 @@ disasm:
 	VERSION=$(VERSION) DISASM_BASEROM=$(BASEROM_DIR)/baserom-decompressed.z64 DISASM_DIR=$(EXPECTED_DIR) PYTHON=$(PYTHON) AS_CMD='$(AS) $(ASFLAGS)' LD=$(LD) ./tools/disasm/do_disasm.sh
 
 run:
-	make
+	make all
 ifeq ($(N64_EMULATOR),)
 	$(error Emulator path not set. Set N64_EMULATOR in the Makefile or define it as an environment variable)
 endif

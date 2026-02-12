@@ -324,11 +324,11 @@ Gfx my_dungeon_room_2_dl_Water_Box_Mesh_mesh_layer_Transparent_tri_0[] = {
 };
 
 Gfx mat_my_dungeon_room_2_dl_floor_2_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_CULL_BACK | G_SHADE | G_FOG | G_SHADING_SMOOTH | G_ZBUFFER),
+	gsSPLoadGeometryMode(G_FOG | G_ZBUFFER | G_SHADING_SMOOTH | G_SHADE | G_CULL_BACK),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_CD_MAGICSQ | G_CK_NONE | G_TP_PERSP | G_TC_FILT | G_TD_CLAMP | G_PM_NPRIMITIVE | G_TT_RGBA16 | G_TL_TILE | G_TF_BILERP | G_CYC_2CYCLE | G_AD_NOISE),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_OPA_SURF2 | G_AC_NONE | G_RM_FOG_SHADE_A | G_ZS_PIXEL),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_TP_PERSP | G_CK_NONE | G_AD_NOISE | G_TL_TILE | G_TF_BILERP | G_TT_RGBA16 | G_CYC_2CYCLE | G_CD_MAGICSQ | G_TD_CLAMP | G_TC_FILT),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_AC_NONE | G_RM_AA_ZB_OPA_SURF2),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, my_dungeon_room_0_dl_men_room_2_00004C48_CITex_ci8_tlut_men_scene_0000F6C0_TLUT_pal_rgba16),
@@ -343,11 +343,11 @@ Gfx mat_my_dungeon_room_2_dl_floor_2_layerOpaque[] = {
 };
 
 Gfx mat_my_dungeon_room_2_dl_oot_water_mat_layerTransparent[] = {
-	gsSPLoadGeometryMode(G_SHADE | G_FOG | G_SHADING_SMOOTH | G_LIGHTING | G_ZBUFFER),
+	gsSPLoadGeometryMode(G_FOG | G_ZBUFFER | G_LIGHTING | G_SHADING_SMOOTH | G_SHADE),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, 0, 0, 0, 1, COMBINED, 0, SHADE, 0, COMBINED, 0, PRIMITIVE, 0),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_CD_MAGICSQ | G_CK_NONE | G_TP_PERSP | G_TC_FILT | G_TD_CLAMP | G_PM_NPRIMITIVE | G_TL_TILE | G_TF_BILERP | G_CYC_2CYCLE | G_TT_NONE | G_AD_NOISE),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_XLU_SURF2 | G_AC_NONE | G_RM_FOG_SHADE_A | G_ZS_PIXEL),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_TP_PERSP | G_CK_NONE | G_TT_NONE | G_AD_NOISE | G_TL_TILE | G_TF_BILERP | G_CYC_2CYCLE | G_CD_MAGICSQ | G_TD_CLAMP | G_TC_FILT),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_AC_NONE | G_RM_AA_ZB_XLU_SURF2),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 149),
 	gsDPSetEnvColor(255, 255, 255, 128),
