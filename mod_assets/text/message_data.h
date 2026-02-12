@@ -4995,10 +4995,10 @@ DEFINE_MESSAGE(0x00AF, TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
 MSG(/* MISSING */)
 ,
 MSG(
-UNSKIPPABLE ITEM_ICON(ITEM_NAYRUS_LOVE) QUICKTEXT_ENABLE "You got " COLOR(BLUE) "Nayru's Love" COLOR(DEFAULT) "!" QUICKTEXT_DISABLE "\n"
-"Cast this to create a powerful\n"
-"protective barrier. It's defensive \n"
-"magic you can use with " COLOR(YELLOW) "[C]" COLOR(DEFAULT) "."
+UNSKIPPABLE ITEM_ICON(ITEM_NAYRUS_LOVE) QUICKTEXT_ENABLE "You found the " COLOR(RED) "Roc's Feather" COLOR(DEFAULT) "!" QUICKTEXT_DISABLE "\n"
+"You feel lighter already! Equip\n"
+"it to " COLOR(YELLOW) "[C]" COLOR(DEFAULT) " to jump with a\n"
+"gust of wind, even in the air!\n"
 )
 ,
 MSG(

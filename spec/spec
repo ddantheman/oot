@@ -312,8 +312,9 @@ beginseg
 #if OOT_NTSC
     romalign 0x1000
 #endif
-    include "$(BUILD_DIR)/assets/misc/link_animetion/link_animetion.o"
-    number 7
+include "$(BUILD_DIR)/assets/misc/link_animetion/link_animetion.o"
+include "$(BUILD_DIR)/assets/misc/link_anims/link_anims.o"
+number 7
 endseg
 
 beginseg
@@ -997,6 +998,7 @@ beginseg
     compress
     romalign 0x1000
     include "$(BUILD_DIR)/assets/objects/gameplay_keep/gameplay_keep.o"
+    include "$(BUILD_DIR)/assets/objects/mod_gameplay_keep/mod_gameplay_keep.o"
     number 4
 endseg
 
