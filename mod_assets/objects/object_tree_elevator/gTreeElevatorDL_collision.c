@@ -1,8 +1,8 @@
 #include "gTreeElevatorDL_collision.h"
 
 SurfaceType gTreeElevatorDL_polygonTypes[2] = {
-    { SURFACETYPE0(0, 0, 0x00, 0, 0x00, 0x00, 0, 0), SURFACETYPE1(0x00, 0x00, 0, 0, 0, 0, 0, 0) },
-    { SURFACETYPE0(0, 0, 0x00, 0, 0x00, 0x00, 0, 0), SURFACETYPE1(0x00, 0x00, 0, 0, 0, 0, 0, 0) },
+    { SURFACETYPE0(0, 0, 0x00, 0, 0x00, 0x00, 0, 0), SURFACETYPE1(0x0A, 0x00, 0, 0, 0, 0, 0, 0) },
+    { SURFACETYPE0(0, 0, 0x00, 0, 0x00, 0x00, 0, 0), SURFACETYPE1(0x0A, 0x00, 0, 0, 0, 0, 0, 0) },
 };
 
 Vec3s gTreeElevatorDL_vertices[17] = {
