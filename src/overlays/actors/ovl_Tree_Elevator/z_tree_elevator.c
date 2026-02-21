@@ -8,8 +8,14 @@
 #include "assets/objects/object_tree_elevator/gTreeElevatorDL.h"
 #include "assets/objects/object_tree_elevator/gTreeElevatorDL_collision.h"
 #include "effect.h"
+#include "sfx.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+
+#define SWITCH_FLAG(this) (this->dyna.actor.params & 0x3F)
+
+#define TREE_ELEVATOR_TRAVEL_DURATION 100
+#define TREE_ELEVATOR_MAX_HEIGHT 180.0f
 
 void TreeElevator_Init(Actor* thisx, PlayState* play);
 void TreeElevator_Destroy(Actor* thisx, PlayState* play);
@@ -17,6 +23,23 @@ void TreeElevator_Update(Actor* thisx, PlayState* play);
 void TreeElevator_Draw(Actor* thisx, PlayState* play);
 
 void TreeElevator_SpawnDust(TreeElevator* this, PlayState* play);
+
+void TreeElevator_SetupWaitForSwitch(TreeElevator* this, PlayState* play);
+void TreeElevator_WaitForSwitch(TreeElevator* this, PlayState* play);
+
+void TreeElevator_SetupRaise(TreeElevator* this, PlayState* play);
+void TreeElevator_Raise(TreeElevator* this, PlayState* play);
+
+void TreeElevator_SetupWaitToLower(TreeElevator* this, PlayState* play);
+void TreeElevator_WaitToLower(TreeElevator* this, PlayState* play);
+
+void TreeElevator_SetupLower(TreeElevator* this, PlayState* play);
+void TreeElevator_Lower(TreeElevator* this, PlayState* play);
+
+// Wait for switch
+// raise
+// wait to lower
+// lower
 
 ActorProfile Tree_Elevator_Profile = {
     ACTOR_TREE_ELEVATOR,
@@ -37,6 +60,8 @@ void TreeElevator_Init(Actor* thisx, PlayState* play){
     CollisionHeader_GetVirtual(&gTreeElevatorDL_collisionHeader, &colHeader);
 
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
+
+    TreeElevator_SetupWaitForSwitch(this, play);
 }
 void TreeElevator_Destroy(Actor* thisx, PlayState* play){
     TreeElevator* this = (TreeElevator*)thisx;
@@ -44,7 +69,9 @@ void TreeElevator_Destroy(Actor* thisx, PlayState* play){
 }
 void TreeElevator_Update(Actor* thisx, PlayState* play){
     TreeElevator* this = (TreeElevator*)thisx;
-    TreeElevator_SpawnDust(this, play);
+    
+    
+    this->actionFunc(this, play);
 }
 void TreeElevator_Draw(Actor* thisx, PlayState* play){
     Gfx_DrawDListOpa(play, gTreeElevatorDL_opaque_dl);
@@ -63,4 +90,69 @@ void TreeElevator_SpawnDust(TreeElevator* this, PlayState* play){
 
     EffectSsDust_Spawn(play, 0, &pos, &velocity, &accel,
         &primColor, &envColor, scale, scaleStep, life, 0);
+}
+
+f32 TreeElevator_SmoothStep(f32 x) {
+    x = CLAMP(x, 0.0f, 1.0f);
+    return x * x * x * (x * (x * 6.0f - 15.0f) + 10.0f);
+}
+
+void TreeElevator_SetupWaitForSwitch(TreeElevator* this, PlayState* play){
+    Flags_UnsetSwitch(play, SWITCH_FLAG(this));
+    this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
+    this->actionFunc = TreeElevator_WaitForSwitch;
+}
+
+void TreeElevator_WaitForSwitch(TreeElevator* this, PlayState* play){
+    if (Flags_GetSwitch(play, SWITCH_FLAG(this))){
+        TreeElevator_SetupRaise(this, play);
+    }
+}
+
+void TreeElevator_SetupRaise(TreeElevator* this, PlayState* play){
+    this->timer = TREE_ELEVATOR_TRAVEL_DURATION;
+    this->actionFunc = TreeElevator_Raise;
+}
+
+void TreeElevator_Raise(TreeElevator* this, PlayState* play){
+    f32 step = (TREE_ELEVATOR_TRAVEL_DURATION - this->timer) / ((f32)TREE_ELEVATOR_TRAVEL_DURATION); // Percent Complete
+    f32 offset = TREE_ELEVATOR_MAX_HEIGHT * TreeElevator_SmoothStep(step);
+    this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y + offset;
+
+    if (DECR(this->timer) == 0) {
+        TreeElevator_SetupWaitToLower(this, play);
+    } else{
+        Actor_PlaySfx(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
+    }
+}
+
+void TreeElevator_SetupWaitToLower(TreeElevator* this, PlayState* play){
+    this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y + TREE_ELEVATOR_MAX_HEIGHT;
+    Actor_PlaySfx(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
+    this->timer = 20 * 5;
+    this->actionFunc = TreeElevator_WaitToLower;
+}
+
+void TreeElevator_WaitToLower(TreeElevator* this, PlayState* play){
+    if (DECR(this->timer) == 0) {
+        TreeElevator_SetupLower(this, play);
+    }
+}
+
+void TreeElevator_SetupLower(TreeElevator* this, PlayState* play){
+    this->timer = TREE_ELEVATOR_TRAVEL_DURATION;
+    this->actionFunc = TreeElevator_Lower;
+}
+
+void TreeElevator_Lower(TreeElevator* this, PlayState* play){
+    f32 step = (this->timer) / ((f32)TREE_ELEVATOR_TRAVEL_DURATION); // Percent Left
+    f32 offset = TREE_ELEVATOR_MAX_HEIGHT * TreeElevator_SmoothStep(step);
+    this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y + offset;
+
+    if (DECR(this->timer) == 0) {
+        Actor_PlaySfx(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
+        TreeElevator_SetupWaitForSwitch(this, play);
+    }else{
+        Actor_PlaySfx(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
+    }
 }
