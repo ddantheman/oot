@@ -4084,6 +4084,15 @@ beginseg
 endseg
 
 beginseg
+    name "object_tree_elevator"
+    compress
+    romalign 0x1000
+    include "$(BUILD_DIR)/assets/objects/object_tree_elevator/gTreeElevatorDL.o"
+    include "$(BUILD_DIR)/assets/objects/object_tree_elevator/gTreeElevatorDL_collision.o"
+    number 6
+endseg
+
+beginseg
     name "g_pn_01"
     compress
     romalign 0x1000
