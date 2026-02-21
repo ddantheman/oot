@@ -6,7 +6,7 @@
 #include "play_state.h"
 
 typedef struct TreeElevator {
-    Actor actor;
+    DynaPolyActor dyna;
     
 } TreeElevator;
 
