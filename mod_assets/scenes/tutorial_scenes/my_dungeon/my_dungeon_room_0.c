@@ -4,7 +4,7 @@
  * Header Child Day (Default)
 */
 #define LENGTH_MY_DUNGEON_ROOM_0_HEADER00_OBJECTLIST 2
-#define LENGTH_MY_DUNGEON_ROOM_0_HEADER00_ACTORLIST 1
+#define LENGTH_MY_DUNGEON_ROOM_0_HEADER00_ACTORLIST 2
 SceneCmd my_dungeon_room_0_header00[] = {
     SCENE_CMD_ROOM_SHAPE(&my_dungeon_room_0_shapeHeader),
     SCENE_CMD_ECHO_SETTINGS(0x00),
@@ -22,6 +22,14 @@ s16 my_dungeon_room_0_header00_objectList[LENGTH_MY_DUNGEON_ROOM_0_HEADER00_OBJE
 };
 
 ActorEntry my_dungeon_room_0_header00_actorList[LENGTH_MY_DUNGEON_ROOM_0_HEADER00_ACTORLIST] = {
+    // Custom Actor
+    {
+        /* Actor ID   */ ACTOR_TREE_ELEVATOR,
+        /* Position   */ { 0, -120, -17 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
     // Treasure Chest
     {
         /* Actor ID   */ ACTOR_EN_BOX,
@@ -375,11 +383,11 @@ Gfx my_dungeon_room_0_dl_metal_vines_mesh_layer_Opaque_tri_0[] = {
 };
 
 Gfx mat_my_dungeon_room_0_dl_wall_stone_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_FOG | G_ZBUFFER | G_SHADING_SMOOTH | G_SHADE | G_CULL_BACK),
+	gsSPLoadGeometryMode(G_FOG | G_SHADING_SMOOTH | G_SHADE | G_ZBUFFER | G_CULL_BACK),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_TP_PERSP | G_CK_NONE | G_AD_NOISE | G_TL_TILE | G_TF_BILERP | G_TT_RGBA16 | G_CYC_2CYCLE | G_CD_MAGICSQ | G_TD_CLAMP | G_TC_FILT),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_AC_NONE | G_RM_AA_ZB_OPA_SURF2),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_AD_NOISE | G_TL_TILE | G_CD_MAGICSQ | G_TC_FILT | G_TF_BILERP | G_CYC_2CYCLE | G_TT_RGBA16 | G_CK_NONE | G_TD_CLAMP | G_TP_PERSP),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_OPA_SURF2 | G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_AC_NONE),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, my_dungeon_room_0_dl_men_room_0_0000B538_CITex_ci8_tlut_men_scene_0000F6C0_TLUT_pal_rgba16),
@@ -394,11 +402,11 @@ Gfx mat_my_dungeon_room_0_dl_wall_stone_layerOpaque[] = {
 };
 
 Gfx mat_my_dungeon_room_0_dl_floor_2_001_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_FOG | G_ZBUFFER | G_SHADING_SMOOTH | G_SHADE | G_CULL_BACK),
+	gsSPLoadGeometryMode(G_FOG | G_SHADING_SMOOTH | G_SHADE | G_ZBUFFER | G_CULL_BACK),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_TP_PERSP | G_CK_NONE | G_AD_NOISE | G_TL_TILE | G_TF_BILERP | G_TT_RGBA16 | G_CYC_2CYCLE | G_CD_MAGICSQ | G_TD_CLAMP | G_TC_FILT),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_AC_NONE | G_RM_AA_ZB_OPA_SURF2),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_AD_NOISE | G_TL_TILE | G_CD_MAGICSQ | G_TC_FILT | G_TF_BILERP | G_CYC_2CYCLE | G_TT_RGBA16 | G_CK_NONE | G_TD_CLAMP | G_TP_PERSP),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_OPA_SURF2 | G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_AC_NONE),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, my_dungeon_room_0_dl_men_room_2_00004C48_CITex_ci8_tlut_men_scene_0000F6C0_TLUT_pal_rgba16),
@@ -413,11 +421,11 @@ Gfx mat_my_dungeon_room_0_dl_floor_2_001_layerOpaque[] = {
 };
 
 Gfx mat_my_dungeon_room_0_dl_wall_stone_climb_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_FOG | G_ZBUFFER | G_SHADING_SMOOTH | G_SHADE | G_CULL_BACK),
+	gsSPLoadGeometryMode(G_FOG | G_SHADING_SMOOTH | G_SHADE | G_ZBUFFER | G_CULL_BACK),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_TP_PERSP | G_CK_NONE | G_AD_NOISE | G_TL_TILE | G_TF_BILERP | G_TT_RGBA16 | G_CYC_2CYCLE | G_CD_MAGICSQ | G_TD_CLAMP | G_TC_FILT),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_AC_NONE | G_RM_AA_ZB_OPA_SURF2),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_AD_NOISE | G_TL_TILE | G_CD_MAGICSQ | G_TC_FILT | G_TF_BILERP | G_CYC_2CYCLE | G_TT_RGBA16 | G_CK_NONE | G_TD_CLAMP | G_TP_PERSP),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_OPA_SURF2 | G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_AC_NONE),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, my_dungeon_room_0_dl_men_room_0_0000B538_CITex_ci8_tlut_men_scene_0000F6C0_TLUT_pal_rgba16),
@@ -432,11 +440,11 @@ Gfx mat_my_dungeon_room_0_dl_wall_stone_climb_layerOpaque[] = {
 };
 
 Gfx mat_my_dungeon_room_0_dl_metal_vines_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_SHADE | G_ZBUFFER | G_SHADING_SMOOTH | G_FOG),
+	gsSPLoadGeometryMode(G_SHADE | G_SHADING_SMOOTH | G_FOG | G_ZBUFFER),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, TEXEL0, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_TP_PERSP | G_CK_NONE | G_AD_NOISE | G_TL_TILE | G_TF_BILERP | G_TT_RGBA16 | G_CYC_2CYCLE | G_CD_MAGICSQ | G_TD_CLAMP | G_TC_FILT),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_TEX_EDGE2 | G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_AC_NONE),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_AD_NOISE | G_TL_TILE | G_CD_MAGICSQ | G_TC_FILT | G_TF_BILERP | G_CYC_2CYCLE | G_TT_RGBA16 | G_CK_NONE | G_TD_CLAMP | G_TP_PERSP),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_TEX_EDGE2 | G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_AC_NONE),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, my_dungeon_room_0_dl_men_room_8_00005D30_Tex_rgba16_pal_rgba16),
