@@ -62609,25 +62609,30 @@ MSG(
 
 DEFINE_MESSAGE(0x71B3, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
 MSG(/* MISSING */),
-MSG("Message 1"),
+MSG("Come talk to me later..."),
 MSG("german"),MSG("french"))
 
 DEFINE_MESSAGE(0x71B4, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
 MSG(/* MISSING */),
-MSG("Message 2"),
+MSG("I meant like WAY later."),
 MSG("german"),MSG("french"))
 
 DEFINE_MESSAGE(0x71B5, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
 MSG(/* MISSING */),
-MSG("Message 3"),
+MSG("Do you like these tutorials?\n"
+"\n"
+TWO_CHOICE
+    COLOR(ADJUSTABLE) "Yep, love 'em!\n"
+    "Absolutely." COLOR(DEFAULT)
+),
 MSG("german"),MSG("french"))
 
 DEFINE_MESSAGE(0x71B6, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
 MSG(/* MISSING */),
-MSG("Message 4"),
+MSG("You love 'em huh? Glad to hear it!"),
 MSG("german"),MSG("french"))
 
 DEFINE_MESSAGE(0x71B7, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
 MSG(/* MISSING */),
-MSG("Message 5"),
+MSG("That's nice."),
 MSG("german"),MSG("french"))

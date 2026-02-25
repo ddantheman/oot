@@ -3,7 +3,7 @@
 /**
  * Header Child Day (Default)
 */
-#define LENGTH_MY_DUNGEON_ROOM_0_HEADER00_OBJECTLIST 3
+#define LENGTH_MY_DUNGEON_ROOM_0_HEADER00_OBJECTLIST 4
 #define LENGTH_MY_DUNGEON_ROOM_0_HEADER00_ACTORLIST 4
 SceneCmd my_dungeon_room_0_header00[] = {
     SCENE_CMD_ROOM_SHAPE(&my_dungeon_room_0_shapeHeader),
@@ -20,6 +20,7 @@ s16 my_dungeon_room_0_header00_objectList[LENGTH_MY_DUNGEON_ROOM_0_HEADER00_OBJE
     OBJECT_BDOOR,
     OBJECT_BOX,
     OBJECT_TREE_ELEVATOR,
+    OBJECT_IM,
 };
 
 ActorEntry my_dungeon_room_0_header00_actorList[LENGTH_MY_DUNGEON_ROOM_0_HEADER00_ACTORLIST] = {
@@ -34,7 +35,7 @@ ActorEntry my_dungeon_room_0_header00_actorList[LENGTH_MY_DUNGEON_ROOM_0_HEADER0
     // Custom Actor
     {
         /* Actor ID   */ ACTOR_NPC_TEST,
-        /* Position   */ { -66, -59, -362 },
+        /* Position   */ { -66, -120, -362 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(180.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },
