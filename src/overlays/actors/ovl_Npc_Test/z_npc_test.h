@@ -1,0 +1,18 @@
+#ifndef Z_NPC_TEST_H
+#define Z_NPC_TEST_H
+
+#include "ultra64.h"
+#include "actor.h"
+#include "play_state.h"
+
+struct NpcTest;
+
+typedef void(*NpcTestActionFunc)(struct NpcTest*, PlayState*);
+
+typedef struct NpcTest {
+    Actor actor;
+    NpcTestActionFunc actionFunc;
+    NpcInteractInfo interactInfo;
+} NpcTest;
+
+#endif
