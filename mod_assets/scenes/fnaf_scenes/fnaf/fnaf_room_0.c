@@ -3,13 +3,31 @@
 /**
  * Header Child Day (Default)
 */
+#define LENGTH_FNAF_ROOM_0_HEADER00_OBJECTLIST 1
+#define LENGTH_FNAF_ROOM_0_HEADER00_ACTORLIST 1
 SceneCmd fnaf_room_0_header00[] = {
     SCENE_CMD_ROOM_SHAPE(&fnaf_room_0_shapeHeader),
     SCENE_CMD_ECHO_SETTINGS(0x00),
     SCENE_CMD_ROOM_BEHAVIOR(0x02, 0x00, false, false),
     SCENE_CMD_SKYBOX_DISABLES(false, false),
     SCENE_CMD_TIME_SETTINGS(255, 255, 10),
+    SCENE_CMD_OBJECT_LIST(LENGTH_FNAF_ROOM_0_HEADER00_OBJECTLIST, fnaf_room_0_header00_objectList),
+    SCENE_CMD_ACTOR_LIST(LENGTH_FNAF_ROOM_0_HEADER00_ACTORLIST, fnaf_room_0_header00_actorList),
     SCENE_CMD_END(),
+};
+
+s16 fnaf_room_0_header00_objectList[LENGTH_FNAF_ROOM_0_HEADER00_OBJECTLIST] = {
+    OBJECT_OFFICE_SECURITY,
+};
+
+ActorEntry fnaf_room_0_header00_actorList[LENGTH_FNAF_ROOM_0_HEADER00_ACTORLIST] = {
+    // Custom Actor
+    {
+        /* Actor ID   */ ACTOR_OFFICE_SECURITY,
+        /* Position   */ { 0, -120, -110 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
 };
 
 RoomShapeNormal fnaf_room_0_shapeHeader = {
@@ -165,21 +183,21 @@ u64 fnaf_room_0_dl_wall_rgba32[] = {
 };
 
 Vtx fnaf_room_0_dl_Floor_mesh_layer_Opaque_vtx_cull[8] = {
-	{{ {-77, -106, 29}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {-77, 1, 29}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {-77, 1, -118}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {-77, -106, -118}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {77, -106, 29}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {77, 1, 29}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {77, 1, -118}, 0, {0, 0}, {0, 0, 0, 0} }},
-	{{ {77, -106, -118}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {-77, -120, 13}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {-77, -13, 13}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {-77, -13, -133}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {-77, -120, -133}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {77, -120, 13}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {77, -13, 13}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {77, -13, -133}, 0, {0, 0}, {0, 0, 0, 0} }},
+	{{ {77, -120, -133}, 0, {0, 0}, {0, 0, 0, 0} }},
 };
 
 Vtx fnaf_room_0_dl_Floor_mesh_layer_Opaque_vtx_0[4] = {
-	{{ {-77, -106, 29}, 0, {-2087, 3079}, {255, 255, 255, 255} }},
-	{{ {77, -106, 29}, 0, {3079, 3079}, {255, 255, 255, 255} }},
-	{{ {77, -106, -118}, 0, {3079, -2087}, {255, 255, 255, 255} }},
-	{{ {-77, -106, -118}, 0, {-2087, -2087}, {255, 255, 255, 255} }},
+	{{ {-77, -120, 13}, 0, {-2087, 3079}, {255, 255, 255, 255} }},
+	{{ {77, -120, 13}, 0, {3079, 3079}, {255, 255, 255, 255} }},
+	{{ {77, -120, -133}, 0, {3079, -2087}, {255, 255, 255, 255} }},
+	{{ {-77, -120, -133}, 0, {-2087, -2087}, {255, 255, 255, 255} }},
 };
 
 Gfx fnaf_room_0_dl_Floor_mesh_layer_Opaque_tri_0[] = {
@@ -189,26 +207,26 @@ Gfx fnaf_room_0_dl_Floor_mesh_layer_Opaque_tri_0[] = {
 };
 
 Vtx fnaf_room_0_dl_Floor_mesh_layer_Opaque_vtx_1[20] = {
-	{{ {-77, 1, 29}, 0, {-16, 899}, {95, 95, 95, 255} }},
-	{{ {-77, 1, -118}, 0, {-16, 93}, {95, 95, 95, 255} }},
-	{{ {77, 1, -118}, 0, {1008, 93}, {95, 95, 95, 255} }},
-	{{ {77, 1, 29}, 0, {1008, 899}, {95, 95, 95, 255} }},
-	{{ {-77, -106, 29}, 0, {-1268, 1156}, {255, 255, 255, 255} }},
-	{{ {-77, 1, 29}, 0, {-1268, -91}, {95, 95, 95, 255} }},
-	{{ {77, 1, 29}, 0, {2260, -91}, {95, 95, 95, 255} }},
-	{{ {77, -106, 29}, 0, {2260, 1156}, {255, 255, 255, 255} }},
-	{{ {77, -106, 29}, 0, {-894, 1156}, {255, 255, 255, 255} }},
-	{{ {77, 1, 29}, 0, {-894, -91}, {95, 95, 95, 255} }},
-	{{ {77, 1, -118}, 0, {1886, -91}, {95, 95, 95, 255} }},
-	{{ {77, -106, -118}, 0, {1886, 1156}, {255, 255, 255, 255} }},
-	{{ {-77, -106, -118}, 0, {1886, 1156}, {255, 255, 255, 255} }},
-	{{ {-77, 1, -118}, 0, {1886, -91}, {95, 95, 95, 255} }},
-	{{ {-77, 1, 29}, 0, {-894, -91}, {95, 95, 95, 255} }},
-	{{ {-77, -106, 29}, 0, {-894, 1156}, {255, 255, 255, 255} }},
-	{{ {77, -106, -118}, 0, {2260, 1156}, {255, 255, 255, 255} }},
-	{{ {77, 1, -118}, 0, {2260, -91}, {95, 95, 95, 255} }},
-	{{ {-77, 1, -118}, 0, {-1268, -91}, {95, 95, 95, 255} }},
-	{{ {-77, -106, -118}, 0, {-1268, 1156}, {255, 255, 255, 255} }},
+	{{ {-77, -13, 13}, 0, {-16, 899}, {95, 95, 95, 255} }},
+	{{ {-77, -13, -133}, 0, {-16, 93}, {95, 95, 95, 255} }},
+	{{ {77, -13, -133}, 0, {1008, 93}, {95, 95, 95, 255} }},
+	{{ {77, -13, 13}, 0, {1008, 899}, {95, 95, 95, 255} }},
+	{{ {-77, -120, 13}, 0, {-1268, 1156}, {255, 255, 255, 255} }},
+	{{ {-77, -13, 13}, 0, {-1268, -91}, {95, 95, 95, 255} }},
+	{{ {77, -13, 13}, 0, {2260, -91}, {95, 95, 95, 255} }},
+	{{ {77, -120, 13}, 0, {2260, 1156}, {255, 255, 255, 255} }},
+	{{ {77, -120, 13}, 0, {-894, 1156}, {255, 255, 255, 255} }},
+	{{ {77, -13, 13}, 0, {-894, -91}, {95, 95, 95, 255} }},
+	{{ {77, -13, -133}, 0, {1886, -91}, {95, 95, 95, 255} }},
+	{{ {77, -120, -133}, 0, {1886, 1156}, {255, 255, 255, 255} }},
+	{{ {-77, -120, -133}, 0, {1886, 1156}, {255, 255, 255, 255} }},
+	{{ {-77, -13, -133}, 0, {1886, -91}, {95, 95, 95, 255} }},
+	{{ {-77, -13, 13}, 0, {-894, -91}, {95, 95, 95, 255} }},
+	{{ {-77, -120, 13}, 0, {-894, 1156}, {255, 255, 255, 255} }},
+	{{ {77, -120, -133}, 0, {2260, 1156}, {255, 255, 255, 255} }},
+	{{ {77, -13, -133}, 0, {2260, -91}, {95, 95, 95, 255} }},
+	{{ {-77, -13, -133}, 0, {-1268, -91}, {95, 95, 95, 255} }},
+	{{ {-77, -120, -133}, 0, {-1268, 1156}, {255, 255, 255, 255} }},
 };
 
 Gfx fnaf_room_0_dl_Floor_mesh_layer_Opaque_tri_1[] = {
@@ -222,11 +240,11 @@ Gfx fnaf_room_0_dl_Floor_mesh_layer_Opaque_tri_1[] = {
 };
 
 Gfx mat_fnaf_room_0_dl_tile_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH | G_CULL_BACK | G_FOG),
+	gsSPLoadGeometryMode(G_SHADE | G_ZBUFFER | G_FOG | G_CULL_BACK | G_SHADING_SMOOTH),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_NOISE | G_CK_NONE | G_TC_FILT | G_TL_TILE | G_TT_NONE | G_PM_NPRIMITIVE | G_CD_MAGICSQ | G_TD_CLAMP | G_CYC_2CYCLE | G_TF_BILERP | G_TP_PERSP),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_RM_AA_ZB_OPA_SURF2 | G_AC_NONE | G_ZS_PIXEL),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_CK_NONE | G_CD_MAGICSQ | G_TF_BILERP | G_AD_NOISE | G_TC_FILT | G_PM_NPRIMITIVE | G_TT_NONE | G_TD_CLAMP | G_CYC_2CYCLE | G_TP_PERSP | G_TL_TILE),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_AC_NONE | G_RM_AA_ZB_OPA_SURF2),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_32b_LOAD_BLOCK, 1, fnaf_room_0_dl_tile_rgba32),
@@ -238,11 +256,11 @@ Gfx mat_fnaf_room_0_dl_tile_layerOpaque[] = {
 };
 
 Gfx mat_fnaf_room_0_dl_wall_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH | G_CULL_BACK | G_FOG),
+	gsSPLoadGeometryMode(G_SHADE | G_ZBUFFER | G_FOG | G_CULL_BACK | G_SHADING_SMOOTH),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_AD_NOISE | G_CK_NONE | G_TC_FILT | G_TL_TILE | G_TT_NONE | G_PM_NPRIMITIVE | G_CD_MAGICSQ | G_TD_CLAMP | G_CYC_2CYCLE | G_TF_BILERP | G_TP_PERSP),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_RM_AA_ZB_OPA_SURF2 | G_AC_NONE | G_ZS_PIXEL),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_CK_NONE | G_CD_MAGICSQ | G_TF_BILERP | G_AD_NOISE | G_TC_FILT | G_PM_NPRIMITIVE | G_TT_NONE | G_TD_CLAMP | G_CYC_2CYCLE | G_TP_PERSP | G_TL_TILE),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_ZS_PIXEL | G_RM_FOG_SHADE_A | G_AC_NONE | G_RM_AA_ZB_OPA_SURF2),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_32b_LOAD_BLOCK, 1, fnaf_room_0_dl_wall_rgba32),

@@ -978,6 +978,13 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_Office_Security"
+    compress
+    include "$(BUILD_DIR)/src/overlays/actors/ovl_Office_Security/z_office_security.o"
+    include "$(BUILD_DIR)/src/overlays/actors/ovl_Office_Security/ovl_Office_Security_reloc.o"
+endseg
+
+beginseg
     name "ovl_En_Test"
     compress
     include "$(BUILD_DIR)/src/overlays/actors/ovl_En_Test/z_en_test.o"
@@ -4063,6 +4070,15 @@ beginseg
     compress
     romalign 0x1000
     include "$(BUILD_DIR)/assets/objects/object_zl4/object_zl4.o"
+    number 6
+endseg
+
+beginseg
+    name "object_office_security"
+    compress
+    romalign 0x1000
+    include "$(BUILD_DIR)/assets/objects/object_office_security/gOfficeSecurityDL.o"
+    include "$(BUILD_DIR)/assets/objects/object_office_security/gOfficeSecurityDL_collision.o"
     number 6
 endseg
 

@@ -46,6 +46,8 @@ extern Vec3s fnaf_scene_vertices[8];
 extern CollisionPoly fnaf_scene_polygons[12];
 extern CollisionHeader fnaf_scene_collisionHeader;
 extern SceneCmd fnaf_room_0_header00[];
+extern s16 fnaf_room_0_header00_objectList[];
+extern ActorEntry fnaf_room_0_header00_actorList[];
 extern Gfx fnaf_room_0_shapeHeader_entry_0_opaque[];
 extern u64 fnaf_room_0_dl_tile_rgba32[];
 extern u64 fnaf_room_0_dl_wall_rgba32[];
