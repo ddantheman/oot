@@ -10,6 +10,23 @@ struct OfficeSecurity;
 typedef void(*OfficeSecurityActionFunc)(struct OfficeSecurity*, PlayState*);
 typedef void (*OfficeSecurityStateFunc)(struct OfficeSecurity*, struct PlayState*);
 
+typedef struct StickDirectionPrompt {
+    /* 0x00 */ u32 stickColorR;
+    /* 0x04 */ u32 stickColorG;
+    /* 0x08 */ u32 stickColorB;
+    /* 0x0C */ u32 stickColorA;
+    /* 0x10 */ f32 stickTexX;
+    /* 0x14 */ f32 stickTexY;
+    /* 0x18 */ u32 arrowColorR;
+    /* 0x1C */ u32 arrowColorG;
+    /* 0x20 */ u32 arrowColorB;
+    /* 0x24 */ u32 arrowColorA;
+    /* 0x28 */ f32 arrowTexX;
+    /* 0x2C */ f32 arrowTexY;
+    /* 0x30 */ f32 z;
+    /* 0x34 */ s32 isEnabled;
+} StickDirectionPrompt;
+
 typedef struct OfficeSecurity {
     DynaPolyActor dyna;
     OfficeSecurityActionFunc actionFunc;
@@ -19,6 +36,12 @@ typedef struct OfficeSecurity {
     u8 moveHorizontal;
     u8 moveVertical;
     s16 stateFlag;
+    StickDirectionPrompt stickLeftPrompt;
+    StickDirectionPrompt stickRightPrompt;
+    f32 arrowAnimTween;
+    f32 stickAnimTween;
+    u8 arrowAnimState;
+    u8 stickAnimState;
 } OfficeSecurity;
 
 typedef enum OfficeSecurityState {
