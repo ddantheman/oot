@@ -14,6 +14,7 @@
 #include "z_lib.h"
 #include "player.h"
 #include "regs.h"
+#include "controller.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -37,6 +38,8 @@ void OfficeSecurity_State_FacingRight(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_LookToLeft(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_LookToRight(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_LookForward(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_OpeningCams(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play);
 
 static OfficeSecurityStateFunc sStateFunc[] = {
     OfficeSecurity_State_FacingForward,
@@ -44,7 +47,9 @@ static OfficeSecurityStateFunc sStateFunc[] = {
     OfficeSecurity_State_FacingRight,
     OfficeSecurity_State_LookToLeft,
     OfficeSecurity_State_LookToRight,
-    OfficeSecurity_State_LookForward
+    OfficeSecurity_State_LookForward,
+    OfficeSecurity_State_OpeningCams,
+    OfficeSecurity_State_InCams
 };
 
 ActorProfile Office_Security_Profile = {
@@ -66,7 +71,7 @@ void OfficeSecurity_Init(Actor* thisx, PlayState* play){
     CollisionHeader_GetVirtual(&gOfficeSecurityDL_collisionHeader, &colHeader);
 
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
-    OfficeSecurity_UpdateCameraDirection(this, play, 0.0f);
+    //OfficeSecurity_UpdateCameraDirection(this, play, 0.0f);
     
     this->stickLeftPrompt.stickColorR = 200;
     this->stickLeftPrompt.stickColorG = 200;
@@ -103,6 +108,7 @@ void OfficeSecurity_Init(Actor* thisx, PlayState* play){
     this->arrowAnimTween = 0;
     this->stickAnimTween = 0;
 
+    this->camIndex = OFFICE_SECURITY_CAM_STAGE;
     this->stateFlag = OFFICE_SECURITY_STATE_FACING_FORWARD;
     this->actionFunc = OfficeSecurity_MainActionFunc;
 }
@@ -315,6 +321,10 @@ void OfficeSecurity_State_FacingForward(OfficeSecurity* this, PlayState* play){
         this->stateFlag = OFFICE_SECURITY_STATE_LOOK_RIGHT;
         this->stickRightPrompt.isEnabled = false;
         //Sfx_PlaySfxCentered(NA_SE_SY_CURSOR);
+    } else if (this->stickAccumY < 0) {
+        this->stateFlag = OFFICE_SECURITY_STATE_OPENING_CAMS;
+        this->stickLeftPrompt.isEnabled = false;
+        this->stickRightPrompt.isEnabled = false;
     }
 }
 
@@ -376,5 +386,34 @@ void OfficeSecurity_State_LookForward(OfficeSecurity* this, PlayState* play){
     OfficeSecurity_UpdateCameraDirection(this, play, this->cameraFaceAngle);
     if (this->cameraFaceAngle == 0.0f) {
         this->stateFlag = OFFICE_SECURITY_STATE_FACING_FORWARD;
+    }
+}
+
+void OfficeSecurity_State_OpeningCams(OfficeSecurity* this, PlayState* play){
+    play->viewpoint = this->camIndex;
+    this->stateFlag = OFFICE_SECURITY_STATE_IN_CAMS;
+}
+
+void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play) {
+    Input* input = &play->state.input[0];
+    if (CHECK_BTN_ALL(input->press.button, BTN_L)){
+        if (play->viewpoint == OFFICE_SECURITY_CAM_STAGE){
+            play->viewpoint = OFFICE_SECURITY_CAM_BATHROOMS;
+        } else {
+            play->viewpoint -= 1;
+        }
+    }
+    if (CHECK_BTN_ALL(input->press.button, BTN_R)){
+        if (play->viewpoint == OFFICE_SECURITY_CAM_BATHROOMS){
+            play->viewpoint = OFFICE_SECURITY_CAM_STAGE;
+        } else {
+            play->viewpoint += 1;
+        }
+    }
+    if (this->stickAccumY > 0) {
+        play->viewpoint = OFFICE_SECURITY_CAM_OFFICE;
+        this->stateFlag = OFFICE_SECURITY_STATE_LOOK_FORWARD;
+        this->stickLeftPrompt.isEnabled = true;
+        this->stickRightPrompt.isEnabled = true;
     }
 }

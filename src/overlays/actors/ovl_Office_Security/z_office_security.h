@@ -42,6 +42,7 @@ typedef struct OfficeSecurity {
     f32 stickAnimTween;
     u8 arrowAnimState;
     u8 stickAnimState;
+    u16 camIndex;
 } OfficeSecurity;
 
 typedef enum OfficeSecurityState {
@@ -51,5 +52,25 @@ typedef enum OfficeSecurityState {
     /* 03 */ OFFICE_SECURITY_STATE_LOOK_LEFT,
     /* 04 */ OFFICE_SECURITY_STATE_LOOK_RIGHT,
     /* 04 */ OFFICE_SECURITY_STATE_LOOK_FORWARD,
+    /* 05 */ OFFICE_SECURITY_STATE_OPENING_CAMS,
+    /* 06 */ OFFICE_SECURITY_STATE_IN_CAMS
 } OfficeSecurityState;
+
+typedef enum OfficeSecurityCams {
+    /* 00 */ OFFICE_SECURITY_CAM_DUMMY,
+    /* 01 */ OFFICE_SECURITY_CAM_OFFICE,
+    /* 02 */ OFFICE_SECURITY_CAM_ROAM,
+    /* 03 */ OFFICE_SECURITY_CAM_STAGE,
+    /* 04 */ OFFICE_SECURITY_CAM_DINING,
+    /* 05 */ OFFICE_SECURITY_CAM_PIRATE,
+    /* 06 */ OFFICE_SECURITY_CAM_LEFT_HALL,
+    /* 07 */ OFFICE_SECURITY_CAM_LEFT_CORNER,
+    /* 08 */ OFFICE_SECURITY_CAM_CLOSET,
+    /* 09 */ OFFICE_SECURITY_CAM_RIGHT_HALL,
+    /* 10 */ OFFICE_SECURITY_CAM_RIGHT_CORNER,
+    /* 11 */ OFFICE_SECURITY_CAM_PARTS,
+    /* 12 */ OFFICE_SECURITY_CAM_KITCHEN,
+    /* 13 */ OFFICE_SECURITY_CAM_BATHROOMS
+} OfficeSecurityCams;
+
 #endif
