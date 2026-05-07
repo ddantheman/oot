@@ -42,14 +42,46 @@ void OfficeSecurity_State_OpeningCams(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play);
 
 void OfficeSecurity_State_Freddy_Stage(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Freddy_Dining(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Freddy_Bathroom(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Freddy_Kitchen(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Freddy_EastHall(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Freddy_EastHallCorner(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Freddy_Inside(OfficeSecurity* this, PlayState* play);
 
 void OfficeSecurity_State_Bonnie_Stage(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Dining1(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Dining2(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Parts1(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Parts2(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Hall(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Closet(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Corner(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Door(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Bonnie_Inside(OfficeSecurity* this, PlayState* play);
 
 void OfficeSecurity_State_Chica_Stage(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Dining1(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Dining2(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Bath1(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Bath2(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Kitchen(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Hall1(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Hall2(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Corner(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Door(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Chica_Inside(OfficeSecurity* this, PlayState* play);
 
 void OfficeSecurity_State_Foxy_One(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Foxy_Two(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Foxy_Three(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Foxy_Run(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Foxy_Door(OfficeSecurity* this, PlayState* play);
+
 
 void OfficeSecurity_State_Golden_Hiding(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Golden_Poster(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_Golden_Inside(OfficeSecurity* this, PlayState* play);
 
 static OfficeSecurityStateFunc playerStateFunc[] = {
     OfficeSecurity_State_FacingForward,
@@ -63,23 +95,54 @@ static OfficeSecurityStateFunc playerStateFunc[] = {
 };
 
 static OfficeSecurityStateFunc freddyStateFunc[] = {
-    OfficeSecurity_State_Freddy_Stage
+    OfficeSecurity_State_Freddy_Stage,
+    OfficeSecurity_State_Freddy_Dining,
+    OfficeSecurity_State_Freddy_Bathroom,
+    OfficeSecurity_State_Freddy_Kitchen,
+    OfficeSecurity_State_Freddy_EastHall,
+    OfficeSecurity_State_Freddy_EastHallCorner,
+    OfficeSecurity_State_Freddy_Inside,
 };
 
 static OfficeSecurityStateFunc bonnieStateFunc[] = {
-    OfficeSecurity_State_Bonnie_Stage
+    OfficeSecurity_State_Bonnie_Stage,
+    OfficeSecurity_State_Bonnie_Dining1,
+    OfficeSecurity_State_Bonnie_Dining2,
+    OfficeSecurity_State_Bonnie_Parts1,
+    OfficeSecurity_State_Bonnie_Parts2,
+    OfficeSecurity_State_Bonnie_Hall,
+    OfficeSecurity_State_Bonnie_Closet,
+    OfficeSecurity_State_Bonnie_Corner,
+    OfficeSecurity_State_Bonnie_Door,
+    OfficeSecurity_State_Bonnie_Inside
 };
 
 static OfficeSecurityStateFunc chicaStateFunc[] = {
-    OfficeSecurity_State_Chica_Stage
+    OfficeSecurity_State_Chica_Stage,
+    OfficeSecurity_State_Chica_Dining1,
+    OfficeSecurity_State_Chica_Dining2,
+    OfficeSecurity_State_Chica_Bath1,
+    OfficeSecurity_State_Chica_Bath2,
+    OfficeSecurity_State_Chica_Kitchen,
+    OfficeSecurity_State_Chica_Hall1,
+    OfficeSecurity_State_Chica_Hall2,
+    OfficeSecurity_State_Chica_Corner,
+    OfficeSecurity_State_Chica_Door,
+    OfficeSecurity_State_Chica_Inside,
 };
 
 static OfficeSecurityStateFunc foxyStateFunc[] = {
-    OfficeSecurity_State_Foxy_One
+    OfficeSecurity_State_Foxy_One,
+    OfficeSecurity_State_Foxy_Two,
+    OfficeSecurity_State_Foxy_Three,
+    OfficeSecurity_State_Foxy_Run,
+    OfficeSecurity_State_Foxy_Door,
 };
 
 static OfficeSecurityStateFunc goldenStateFunc[] = {
-    OfficeSecurity_State_Golden_Hiding
+    OfficeSecurity_State_Golden_Hiding,
+    OfficeSecurity_State_Golden_Poster,
+    OfficeSecurity_State_Golden_Inside,
 };
 
 ActorProfile Office_Security_Profile = {
@@ -457,18 +520,142 @@ void OfficeSecurity_State_Freddy_Stage(OfficeSecurity* this, PlayState* play) {
 
 }
 
-void OfficeSecurity_State_Bonnie_Stage(OfficeSecurity* this, PlayState* play) {
+void OfficeSecurity_State_Freddy_Dining(OfficeSecurity* this, PlayState* play) {
 
 }
 
-void OfficeSecurity_State_Chica_Stage(OfficeSecurity* this, PlayState* play) {
+void OfficeSecurity_State_Freddy_Bathroom(OfficeSecurity* this, PlayState* play) {
 
 }
 
-void OfficeSecurity_State_Foxy_One(OfficeSecurity* this, PlayState* play) {
+void OfficeSecurity_State_Freddy_Kitchen(OfficeSecurity* this, PlayState* play) {
 
 }
 
-void OfficeSecurity_State_Golden_Hiding(OfficeSecurity* this, PlayState* play) {
+void OfficeSecurity_State_Freddy_EastHall(OfficeSecurity* this, PlayState* play) {
+
+}
+
+void OfficeSecurity_State_Freddy_EastHallCorner(OfficeSecurity* this, PlayState* play) {
+
+}
+
+void OfficeSecurity_State_Freddy_Inside(OfficeSecurity* this, PlayState* play) {
+
+}
+
+void OfficeSecurity_State_Bonnie_Stage(OfficeSecurity* this, PlayState* play){
+    
+}
+
+void OfficeSecurity_State_Bonnie_Dining1(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Bonnie_Dining2(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Bonnie_Parts1(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Bonnie_Parts2(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Bonnie_Hall(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Bonnie_Closet(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Bonnie_Corner(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Bonnie_Door(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Bonnie_Inside(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Stage(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Dining1(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Dining2(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Bath1(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Bath2(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Kitchen(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Hall1(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Hall2(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Corner(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Door(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Chica_Inside(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Foxy_One(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Foxy_Two(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Foxy_Three(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Foxy_Run(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Foxy_Door(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Golden_Hiding(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Golden_Poster(OfficeSecurity* this, PlayState* play){
+
+}
+
+void OfficeSecurity_State_Golden_Inside(OfficeSecurity* this, PlayState* play){
 
 }

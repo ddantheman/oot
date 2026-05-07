@@ -108,7 +108,8 @@ typedef enum OfficeSecurityFoxyState {
 
 typedef enum OfficeSecurityGoldenState {
     /* 00 */ OFFICE_SECURITY_STATE_GOLDEN_HIDING,
-    /* 00 */ OFFICE_SECURITY_STATE_GOLDEN_INSIDE,
+    /* 01 */ OFFICE_SECURITY_STATE_GOLDEN_POSTER,
+    /* 02 */ OFFICE_SECURITY_STATE_GOLDEN_INSIDE,
 } OfficeSecurityGoldenState;
 
 typedef enum OfficeSecurityCams {
