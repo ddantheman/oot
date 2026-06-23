@@ -31,6 +31,7 @@ void OfficeSecurity_DrawTextRec(PlayState* play, s32 r, s32 g, s32 b, s32 a, f32
 void OfficeSecurity_UpdateJoystickInputState(PlayState* play, OfficeSecurity* this);
 void OfficeSecurity_UpdateCameraDirection(OfficeSecurity* this, PlayState* play, f32 cameraFaceAngle);
 void OfficeSecurity_UpdateStickDirectionPromptAnim(OfficeSecurity* this);
+void OfficeSecurity_UpdatePower(OfficeSecurity* this);
 
 void OfficeSecurity_State_FacingForward(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_FacingLeft(OfficeSecurity* this, PlayState* play);
@@ -40,6 +41,7 @@ void OfficeSecurity_State_LookToRight(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_LookForward(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_OpeningCams(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_PowerOff(OfficeSecurity* this, PlayState* play);
 
 void OfficeSecurity_State_Freddy_Stage(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_Freddy_Dining(OfficeSecurity* this, PlayState* play);
@@ -91,7 +93,8 @@ static OfficeSecurityStateFunc playerStateFunc[] = {
     OfficeSecurity_State_LookToRight,
     OfficeSecurity_State_LookForward,
     OfficeSecurity_State_OpeningCams,
-    OfficeSecurity_State_InCams
+    OfficeSecurity_State_InCams,
+    OfficeSecurity_State_PowerOff
 };
 
 static OfficeSecurityStateFunc freddyStateFunc[] = {
@@ -201,8 +204,28 @@ void OfficeSecurity_Init(Actor* thisx, PlayState* play){
     this->arrowAnimTween = 0;
     this->stickAnimTween = 0;
 
+    this->timer = 0;
+    this->fps = FRAMERATE_CONST(20, 17);
+    switch (this->currentNight){
+        case NIGHT_1:
+            this->passiveDrainFrequency = UINT16_MAX;
+            break;
+        case NIGHT_2:
+            this->passiveDrainFrequency = 6 * this->fps;
+            break;
+        case NIGHT_3:
+            this->passiveDrainFrequency = 5 * this->fps;
+            break;
+        case NIGHT_4:
+            this->passiveDrainFrequency = 4 * this->fps;
+            break;
+        default:
+            this->passiveDrainFrequency = 3 * this->fps;
+    }
+
     this->camIndex = OFFICE_SECURITY_CAM_STAGE;
     this->playerStateFlag = OFFICE_SECURITY_STATE_FACING_FORWARD;
+    this->remainingPower = 999;
     this->actionFunc = OfficeSecurity_MainActionFunc;
 }
 
@@ -223,8 +246,10 @@ void OfficeSecurity_Draw(Actor* thisx, PlayState* play){
 }
 
 void OfficeSecurity_MainActionFunc(OfficeSecurity* this, PlayState* play) {
+    this->timer++;
     OfficeSecurity_UpdateJoystickInputState(play, this);
     OfficeSecurity_UpdateStickDirectionPromptAnim(this);
+    OfficeSecurity_UpdatePower(this);
     playerStateFunc[this->playerStateFlag](this, play);
     freddyStateFunc[this->freddyStateFlag](this, play);
     bonnieStateFunc[this->bonnieStateFlag](this, play);
@@ -410,6 +435,35 @@ void OfficeSecurity_UpdateStickDirectionPromptAnim(OfficeSecurity* this) {
     this->stickLeftPrompt.stickTexY = this->stickRightPrompt.stickTexY = 95.0f;
 }
 
+void OfficeSecurity_UpdatePower(OfficeSecurity* this){
+    if (this->playerStateFlag != OFFICE_SECURITY_STATE_POWER_OFF){
+        if (this->remainingPower <= 0){
+            // TODO Check for cam open etc to reset player
+            this->playerStateFlag = OFFICE_SECURITY_STATE_POWER_OFF;
+        } else {
+            if (this->timer % this->passiveDrainFrequency == 0){
+                this->remainingPower--;
+            }
+            if (this->timer % this->fps == 0){
+                u8 totalSources = 1;
+                if (this->playerStateFlag == OFFICE_SECURITY_STATE_IN_CAMS){
+                    totalSources++;
+                }
+                // if (left door closed){
+                //     totalSources++;
+                // }
+                // if (right door closed){
+                //     totalSources++;
+                // }
+                // if (left light on or right light on){
+                //     totalSources++;
+                // }
+                this->remainingPower -= totalSources;
+            }
+        }
+    }
+}
+
 void OfficeSecurity_State_FacingForward(OfficeSecurity* this, PlayState* play){
     if (this->stickAccumX < 0) {
         this->playerStateFlag = OFFICE_SECURITY_STATE_LOOK_LEFT;
@@ -514,6 +568,10 @@ void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play) {
         this->stickLeftPrompt.isEnabled = true;
         this->stickRightPrompt.isEnabled = true;
     }
+}
+
+void OfficeSecurity_State_PowerOff(OfficeSecurity* this, PlayState* play){
+
 }
 
 void OfficeSecurity_State_Freddy_Stage(OfficeSecurity* this, PlayState* play) {
