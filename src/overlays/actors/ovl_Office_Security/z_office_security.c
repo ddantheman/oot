@@ -43,6 +43,16 @@ void OfficeSecurity_State_OpeningCams(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_PowerOff(OfficeSecurity* this, PlayState* play);
 
+void OfficeSecurity_State_LDoor_Open(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_LDoor_Closed(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_LDoor_Opening(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_LDoor_Closing(OfficeSecurity* this, PlayState* play);
+
+void OfficeSecurity_State_RDoor_Open(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_RDoor_Closed(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_RDoor_Opening(OfficeSecurity* this, PlayState* play);
+void OfficeSecurity_State_RDoor_Closing(OfficeSecurity* this, PlayState* play);
+
 void OfficeSecurity_State_Freddy_Stage(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_Freddy_Dining(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_Freddy_Bathroom(OfficeSecurity* this, PlayState* play);
@@ -95,6 +105,20 @@ static OfficeSecurityStateFunc playerStateFunc[] = {
     OfficeSecurity_State_OpeningCams,
     OfficeSecurity_State_InCams,
     OfficeSecurity_State_PowerOff
+};
+
+static OfficeSecurityStateFunc LDoorStateFunc[] = {
+    OfficeSecurity_State_LDoor_Open,
+    OfficeSecurity_State_LDoor_Closed,
+    OfficeSecurity_State_LDoor_Opening,
+    OfficeSecurity_State_LDoor_Closing
+};
+
+static OfficeSecurityStateFunc RDoorStateFunc[] = {
+    OfficeSecurity_State_RDoor_Open,
+    OfficeSecurity_State_RDoor_Closed,
+    OfficeSecurity_State_RDoor_Opening,
+    OfficeSecurity_State_RDoor_Closing
 };
 
 static OfficeSecurityStateFunc freddyStateFunc[] = {
@@ -224,7 +248,7 @@ void OfficeSecurity_Init(Actor* thisx, PlayState* play){
     }
 
     this->camIndex = OFFICE_SECURITY_CAM_STAGE;
-    this->playerStateFlag = OFFICE_SECURITY_STATE_FACING_FORWARD;
+    this->playerStateFlag = OFFICE_SECURITY_PLAYER_FACING_FORWARD;
     this->remainingPower = 999;
     this->actionFunc = OfficeSecurity_MainActionFunc;
 }
@@ -251,6 +275,8 @@ void OfficeSecurity_MainActionFunc(OfficeSecurity* this, PlayState* play) {
     OfficeSecurity_UpdateStickDirectionPromptAnim(this);
     OfficeSecurity_UpdatePower(this);
     playerStateFunc[this->playerStateFlag](this, play);
+    LDoorStateFunc[this->LDoorStateFlag](this, play);
+    RDoorStateFunc[this->RDoorStateFlag](this, play);
     freddyStateFunc[this->freddyStateFlag](this, play);
     bonnieStateFunc[this->bonnieStateFlag](this, play);
     chicaStateFunc[this->chicaStateFlag](this, play);
@@ -436,25 +462,26 @@ void OfficeSecurity_UpdateStickDirectionPromptAnim(OfficeSecurity* this) {
 }
 
 void OfficeSecurity_UpdatePower(OfficeSecurity* this){
-    if (this->playerStateFlag != OFFICE_SECURITY_STATE_POWER_OFF){
+    if (this->playerStateFlag != OFFICE_SECURITY_PLAYER_POWER_OFF){
         if (this->remainingPower <= 0){
             // TODO Check for cam open etc to reset player
-            this->playerStateFlag = OFFICE_SECURITY_STATE_POWER_OFF;
+            this->playerStateFlag = OFFICE_SECURITY_PLAYER_POWER_OFF;
         } else {
             if (this->timer % this->passiveDrainFrequency == 0){
                 this->remainingPower--;
             }
+            // Functionally should work with decreasing at second intervals but if i want to display usage on screen properly i need to change it
             if (this->timer % this->fps == 0){
                 u8 totalSources = 1;
-                if (this->playerStateFlag == OFFICE_SECURITY_STATE_IN_CAMS){
+                if (this->playerStateFlag == OFFICE_SECURITY_PLAYER_IN_CAMS){
                     totalSources++;
                 }
-                // if (left door closed){
-                //     totalSources++;
-                // }
-                // if (right door closed){
-                //     totalSources++;
-                // }
+                if (this->LDoorStateFlag == OFFICE_SECURITY_LDOOR_CLOSED){
+                    totalSources++;
+                }
+                if (this->RDoorStateFlag == OFFICE_SECURITY_RDOOR_CLOSED){
+                    totalSources++;
+                }
                 // if (left light on or right light on){
                 //     totalSources++;
                 // }
@@ -466,15 +493,15 @@ void OfficeSecurity_UpdatePower(OfficeSecurity* this){
 
 void OfficeSecurity_State_FacingForward(OfficeSecurity* this, PlayState* play){
     if (this->stickAccumX < 0) {
-        this->playerStateFlag = OFFICE_SECURITY_STATE_LOOK_LEFT;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_LOOK_LEFT;
         this->stickLeftPrompt.isEnabled = false;
         //Sfx_PlaySfxCentered(NA_SE_SY_CURSOR);
     } else if (this->stickAccumX > 0) {
-        this->playerStateFlag = OFFICE_SECURITY_STATE_LOOK_RIGHT;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_LOOK_RIGHT;
         this->stickRightPrompt.isEnabled = false;
         //Sfx_PlaySfxCentered(NA_SE_SY_CURSOR);
     } else if (this->stickAccumY < 0) {
-        this->playerStateFlag = OFFICE_SECURITY_STATE_OPENING_CAMS;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_OPENING_CAMS;
         this->stickLeftPrompt.isEnabled = false;
         this->stickRightPrompt.isEnabled = false;
     }
@@ -482,7 +509,7 @@ void OfficeSecurity_State_FacingForward(OfficeSecurity* this, PlayState* play){
 
 void OfficeSecurity_State_FacingLeft(OfficeSecurity* this, PlayState* play){
     if (this->stickAccumX > 0) {
-        this->playerStateFlag = OFFICE_SECURITY_STATE_LOOK_FORWARD;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_LOOK_FORWARD;
         this->stickLeftPrompt.isEnabled = true;
         //Sfx_PlaySfxCentered(NA_SE_SY_CURSOR);
     }
@@ -490,7 +517,7 @@ void OfficeSecurity_State_FacingLeft(OfficeSecurity* this, PlayState* play){
 
 void OfficeSecurity_State_FacingRight(OfficeSecurity* this, PlayState* play){
     if (this->stickAccumX < 0) {
-        this->playerStateFlag = OFFICE_SECURITY_STATE_LOOK_FORWARD;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_LOOK_FORWARD;
         this->stickRightPrompt.isEnabled = true;
         //Sfx_PlaySfxCentered(NA_SE_SY_CURSOR);
     }
@@ -507,7 +534,7 @@ void OfficeSecurity_State_LookToLeft(OfficeSecurity* this, PlayState* play){
 
     if (this->cameraFaceAngle >= 30.0f) {
         OfficeSecurity_UpdateCameraDirection(this, play, 30.0f);
-        this->playerStateFlag = OFFICE_SECURITY_STATE_FACING_LEFT;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_FACING_LEFT;
     } else {
         this->stickAccumX = 0;
     }
@@ -524,7 +551,7 @@ void OfficeSecurity_State_LookToRight(OfficeSecurity* this, PlayState* play){
 
     if (this->cameraFaceAngle <= -30.0f) {
         OfficeSecurity_UpdateCameraDirection(this, play, -30.0f);
-        this->playerStateFlag = OFFICE_SECURITY_STATE_FACING_RIGHT;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_FACING_RIGHT;
     } else {
         this->stickAccumX = 0;
     }
@@ -537,13 +564,13 @@ void OfficeSecurity_State_LookForward(OfficeSecurity* this, PlayState* play){
     }
     OfficeSecurity_UpdateCameraDirection(this, play, this->cameraFaceAngle);
     if (this->cameraFaceAngle == 0.0f) {
-        this->playerStateFlag = OFFICE_SECURITY_STATE_FACING_FORWARD;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_FACING_FORWARD;
     }
 }
 
 void OfficeSecurity_State_OpeningCams(OfficeSecurity* this, PlayState* play){
     play->viewpoint = this->camIndex;
-    this->playerStateFlag = OFFICE_SECURITY_STATE_IN_CAMS;
+    this->playerStateFlag = OFFICE_SECURITY_PLAYER_IN_CAMS;
 }
 
 void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play) {
@@ -564,7 +591,7 @@ void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play) {
     }
     if (this->stickAccumY > 0) {
         play->viewpoint = OFFICE_SECURITY_CAM_OFFICE;
-        this->playerStateFlag = OFFICE_SECURITY_STATE_LOOK_FORWARD;
+        this->playerStateFlag = OFFICE_SECURITY_PLAYER_LOOK_FORWARD;
         this->stickLeftPrompt.isEnabled = true;
         this->stickRightPrompt.isEnabled = true;
     }
@@ -572,6 +599,66 @@ void OfficeSecurity_State_InCams(OfficeSecurity* this, PlayState* play) {
 
 void OfficeSecurity_State_PowerOff(OfficeSecurity* this, PlayState* play){
 
+}
+
+void OfficeSecurity_State_LDoor_Open(OfficeSecurity* this, PlayState* play){
+    if (this->playerStateFlag == OFFICE_SECURITY_PLAYER_FACING_LEFT){
+        Input* input = &play->state.input[0];
+        if (CHECK_BTN_ALL(input->press.button, BTN_A)){
+            Sfx_PlaySfxCentered(NA_SE_SY_GLASSMODE_OFF);
+            this->LDoorStateFlag = OFFICE_SECURITY_LDOOR_CLOSING;
+        }
+    }
+}
+
+void OfficeSecurity_State_LDoor_Closed(OfficeSecurity* this, PlayState* play){
+    if (this->playerStateFlag == OFFICE_SECURITY_PLAYER_FACING_LEFT){
+        Input* input = &play->state.input[0];
+        if (CHECK_BTN_ALL(input->press.button, BTN_A)){
+            Sfx_PlaySfxCentered(NA_SE_SY_GLASSMODE_ON);
+            this->LDoorStateFlag = OFFICE_SECURITY_LDOOR_OPENING;
+        }
+    }
+}
+
+void OfficeSecurity_State_LDoor_Opening(OfficeSecurity* this, PlayState* play){
+    //TODO Bring up the door
+    this->LDoorStateFlag = OFFICE_SECURITY_LDOOR_OPEN;
+}
+
+void OfficeSecurity_State_LDoor_Closing(OfficeSecurity* this, PlayState* play){
+    //TODO Bring down the door
+    this->LDoorStateFlag = OFFICE_SECURITY_LDOOR_CLOSED;
+}
+
+void OfficeSecurity_State_RDoor_Open(OfficeSecurity* this, PlayState* play){
+    if (this->playerStateFlag == OFFICE_SECURITY_PLAYER_FACING_RIGHT){
+        Input* input = &play->state.input[0];
+        if (CHECK_BTN_ALL(input->press.button, BTN_A)){
+            Sfx_PlaySfxCentered(NA_SE_SY_GLASSMODE_OFF);
+            this->RDoorStateFlag = OFFICE_SECURITY_RDOOR_CLOSING;
+        }
+    }
+}
+
+void OfficeSecurity_State_RDoor_Closed(OfficeSecurity* this, PlayState* play){
+    if (this->playerStateFlag == OFFICE_SECURITY_PLAYER_FACING_RIGHT){
+        Input* input = &play->state.input[0];
+        if (CHECK_BTN_ALL(input->press.button, BTN_A)){
+            Sfx_PlaySfxCentered(NA_SE_SY_GLASSMODE_ON);
+            this->RDoorStateFlag = OFFICE_SECURITY_RDOOR_OPENING;
+        }
+    }
+}
+
+void OfficeSecurity_State_RDoor_Opening(OfficeSecurity* this, PlayState* play){
+    //TODO Bring up the door
+    this->RDoorStateFlag = OFFICE_SECURITY_RDOOR_OPEN;
+}
+
+void OfficeSecurity_State_RDoor_Closing(OfficeSecurity* this, PlayState* play){
+    //TODO Bring down the door
+    this->RDoorStateFlag = OFFICE_SECURITY_RDOOR_CLOSED;
 }
 
 void OfficeSecurity_State_Freddy_Stage(OfficeSecurity* this, PlayState* play) {
