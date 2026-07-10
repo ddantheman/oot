@@ -18,6 +18,10 @@
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
+u64 moddedPowerDisplay[TEX_LEN(u64, 16, 32, 8)] = {
+#include "assets/textures/modded/moddedPowerDisplay.ia8.inc.c"
+};
+
 void OfficeSecurity_Init(Actor* thisx, PlayState* play);
 void OfficeSecurity_Destroy(Actor* thisx, PlayState* play);
 void OfficeSecurity_Update(Actor* thisx, PlayState* play);
@@ -31,7 +35,7 @@ void OfficeSecurity_DrawTextRec(PlayState* play, s32 r, s32 g, s32 b, s32 a, f32
 void OfficeSecurity_UpdateJoystickInputState(PlayState* play, OfficeSecurity* this);
 void OfficeSecurity_UpdateCameraDirection(OfficeSecurity* this, PlayState* play, f32 cameraFaceAngle);
 void OfficeSecurity_UpdateStickDirectionPromptAnim(OfficeSecurity* this);
-void OfficeSecurity_UpdatePower(OfficeSecurity* this);
+void OfficeSecurity_UpdatePower(OfficeSecurity* this, PlayState* play);
 
 void OfficeSecurity_State_FacingForward(OfficeSecurity* this, PlayState* play);
 void OfficeSecurity_State_FacingLeft(OfficeSecurity* this, PlayState* play);
@@ -273,7 +277,7 @@ void OfficeSecurity_MainActionFunc(OfficeSecurity* this, PlayState* play) {
     this->timer++;
     OfficeSecurity_UpdateJoystickInputState(play, this);
     OfficeSecurity_UpdateStickDirectionPromptAnim(this);
-    OfficeSecurity_UpdatePower(this);
+    OfficeSecurity_UpdatePower(this, play);
     playerStateFunc[this->playerStateFlag](this, play);
     LDoorStateFunc[this->LDoorStateFlag](this, play);
     RDoorStateFunc[this->RDoorStateFlag](this, play);
@@ -288,7 +292,7 @@ void OfficeSecurity_DrawStickDirectionPrompts(PlayState* play, OfficeSecurity* t
     s32 drawStickLeftPrompt = this->stickLeftPrompt.isEnabled;
     s32 drawStickRightPrompt = this->stickRightPrompt.isEnabled;
 
-    OPEN_DISPS(play->state.gfxCtx, "../z_office_security.c", 4252);
+    OPEN_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
     if (drawStickLeftPrompt || drawStickRightPrompt) {
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -323,7 +327,7 @@ void OfficeSecurity_DrawStickDirectionPrompts(PlayState* play, OfficeSecurity* t
                                 this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
         }
     }
-    CLOSE_DISPS(play->state.gfxCtx, "../z_office_security.c", 4300);
+    CLOSE_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void OfficeSecurity_DrawTextRec(PlayState* play, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t, f32 dx, f32 dy) {
@@ -332,7 +336,7 @@ void OfficeSecurity_DrawTextRec(PlayState* play, s32 r, s32 g, s32 b, s32 a, f32
     f32 w, h;
     s32 dsdx, dtdy;
 
-    OPEN_DISPS(play->state.gfxCtx, "../z_office_security.c", 4228);
+    OPEN_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
     gDPPipeSync(OVERLAY_DISP++);
     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, r, g, b, a);
 
@@ -349,7 +353,7 @@ void OfficeSecurity_DrawTextRec(PlayState* play, s32 r, s32 g, s32 b, s32 a, f32
     dtdy = dy * texCoordScale;
 
     gSPTextureRectangle(OVERLAY_DISP++, ulx, uly, lrx, lry, G_TX_RENDERTILE, s, t, dsdx, dtdy);
-    CLOSE_DISPS(play->state.gfxCtx, "../z_office_security.c", 4242);
+    CLOSE_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void OfficeSecurity_UpdateCameraDirection(OfficeSecurity* this, PlayState* play, f32 cameraFaceAngle) {
@@ -461,32 +465,56 @@ void OfficeSecurity_UpdateStickDirectionPromptAnim(OfficeSecurity* this) {
     this->stickLeftPrompt.stickTexY = this->stickRightPrompt.stickTexY = 95.0f;
 }
 
-void OfficeSecurity_UpdatePower(OfficeSecurity* this){
+void OfficeSecurity_UpdatePower(OfficeSecurity* this, PlayState* play){
     if (this->playerStateFlag != OFFICE_SECURITY_PLAYER_POWER_OFF){
         if (this->remainingPower <= 0){
             // TODO Check for cam open etc to reset player
             this->playerStateFlag = OFFICE_SECURITY_PLAYER_POWER_OFF;
         } else {
+            OPEN_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
+            gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(OVERLAY_DISP++, moddedPowerDisplay, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+
+            gDPPipeSync(OVERLAY_DISP++);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 255, 0, 255);
+            gSPTextureRectangle(OVERLAY_DISP++, 30 << 2, 190 << 2, 38 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+            
+            u8 totalSources = 1;
+            if (this->playerStateFlag == OFFICE_SECURITY_PLAYER_IN_CAMS){
+                totalSources++;
+            }
+            if (this->LDoorStateFlag == OFFICE_SECURITY_LDOOR_CLOSED){
+                totalSources++;
+            }
+            if (this->RDoorStateFlag == OFFICE_SECURITY_RDOOR_CLOSED){
+                totalSources++;
+            }
+            // if (left light on or right light on){
+            //     actually i should just include this as an or in the cam check
+            //     totalSources++;
+            // }
+            if (totalSources >= 2){
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 255, 0, 255);
+                gSPTextureRectangle(OVERLAY_DISP++, 40 << 2, 190 << 2, 48 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+            }
+            if (totalSources >= 3){
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 0, 255);
+                gSPTextureRectangle(OVERLAY_DISP++, 50 << 2, 190 << 2, 58 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+            }
+            if (totalSources >= 4){
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 0, 0, 255);
+                gSPTextureRectangle(OVERLAY_DISP++, 60 << 2, 190 << 2, 68 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+            }
+            
             if (this->timer % this->passiveDrainFrequency == 0){
                 this->remainingPower--;
             }
-            // Functionally should work with decreasing at second intervals but if i want to display usage on screen properly i need to change it
             if (this->timer % this->fps == 0){
-                u8 totalSources = 1;
-                if (this->playerStateFlag == OFFICE_SECURITY_PLAYER_IN_CAMS){
-                    totalSources++;
-                }
-                if (this->LDoorStateFlag == OFFICE_SECURITY_LDOOR_CLOSED){
-                    totalSources++;
-                }
-                if (this->RDoorStateFlag == OFFICE_SECURITY_RDOOR_CLOSED){
-                    totalSources++;
-                }
-                // if (left light on or right light on){
-                //     totalSources++;
-                // }
                 this->remainingPower -= totalSources;
             }
+            CLOSE_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
         }
     }
 }
