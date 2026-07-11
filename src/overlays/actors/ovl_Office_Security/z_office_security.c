@@ -21,6 +21,13 @@
 u64 moddedPowerDisplay[TEX_LEN(u64, 16, 32, 8)] = {
 #include "assets/textures/modded/moddedPowerDisplay.ia8.inc.c"
 };
+u64 moddedUsageText[TEX_LEN(u64, 48, 16, 4)] = {
+#include "assets/textures/modded/moddedUsageText.ia4.inc.c"
+};
+u64 moddedPowerLeftText[TEX_LEN(u64, 128, 16, 4)] = {
+#include "assets/textures/modded/moddedPowerLeftText.ia4.inc.c"
+};
+
 
 void OfficeSecurity_Init(Actor* thisx, PlayState* play);
 void OfficeSecurity_Destroy(Actor* thisx, PlayState* play);
@@ -473,13 +480,29 @@ void OfficeSecurity_UpdatePower(OfficeSecurity* this, PlayState* play){
         } else {
             OPEN_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gDPLoadTextureBlock(OVERLAY_DISP++, moddedPowerDisplay, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+            gDPPipeSync(OVERLAY_DISP++);
+
+            // Load "Power Left:" Text
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, moddedPowerLeftText, G_IM_FMT_IA, 128, 16, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 200);
+            gSPTextureRectangle(OVERLAY_DISP++, 8 << 2, 162 << 2, 136 << 2, 178 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+
+            // Load "Usage:" Text
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, moddedUsageText, G_IM_FMT_IA, 48, 16, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 200);
+            gSPTextureRectangle(OVERLAY_DISP++, 8 << 2, 188 << 2, 56 << 2, 204 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
+            // Load Power Usage colored box
+            gDPLoadTextureBlock(OVERLAY_DISP++, moddedPowerDisplay, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 32, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-
-            gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 255, 0, 255);
-            gSPTextureRectangle(OVERLAY_DISP++, 30 << 2, 190 << 2, 38 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+            //gDPPipeSync(OVERLAY_DISP++);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 255, 0, 200);
+            gSPTextureRectangle(OVERLAY_DISP++, 60 << 2, 190 << 2, 68 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
             
             u8 totalSources = 1;
             if (this->playerStateFlag == OFFICE_SECURITY_PLAYER_IN_CAMS){
@@ -496,16 +519,16 @@ void OfficeSecurity_UpdatePower(OfficeSecurity* this, PlayState* play){
             //     totalSources++;
             // }
             if (totalSources >= 2){
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 255, 0, 255);
-                gSPTextureRectangle(OVERLAY_DISP++, 40 << 2, 190 << 2, 48 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 255, 0, 200);
+                gSPTextureRectangle(OVERLAY_DISP++, 70 << 2, 190 << 2, 78 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
             }
             if (totalSources >= 3){
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 0, 255);
-                gSPTextureRectangle(OVERLAY_DISP++, 50 << 2, 190 << 2, 58 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 0, 200);
+                gSPTextureRectangle(OVERLAY_DISP++, 80 << 2, 190 << 2, 88 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
             }
             if (totalSources >= 4){
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 0, 0, 255);
-                gSPTextureRectangle(OVERLAY_DISP++, 60 << 2, 190 << 2, 68 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 0, 0, 200);
+                gSPTextureRectangle(OVERLAY_DISP++, 90 << 2, 190 << 2, 98 << 2, 202 << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
             }
             
             if (this->timer % this->passiveDrainFrequency == 0){

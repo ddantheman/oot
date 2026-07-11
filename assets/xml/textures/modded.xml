@@ -1,5 +1,7 @@
 <Root>
     <File Name="modded" Segment="14">
         <Texture Name="moddedPowerDisplay" Format="ia8" Width="16" Height="32"/>
+        <Texture Name="moddedUsageText" Format="ia4" Width="48" Height="16"/>
+        <Texture Name="moddedPowerLeftText" Format="ia4" Width="128" Height="16"/>
     </File>
 </Root>
